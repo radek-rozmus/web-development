@@ -1,58 +1,92 @@
 class App
 {
-num1!: HTMLInputElement;
-num2!: HTMLInputElement;
-num3!: HTMLInputElement;
-num4!: HTMLInputElement;
+howManyNumbers!: number;
+setsData: HTMLDivElement = document.querySelector('#sets-data') as HTMLDivElement;
+inputs: HTMLInputElement[] = [];
+inputValues: number[] = [];
 
-sum!: HTMLInputElement;
-avr!: HTMLInputElement;
-min!: HTMLInputElement;
-max!: HTMLInputElement;
+sum: HTMLInputElement = document.querySelector('#sum') as HTMLInputElement;
+avr: HTMLInputElement = document.querySelector('#avr') as HTMLInputElement;
+min: HTMLInputElement = document.querySelector('#min') as HTMLInputElement;
+max: HTMLInputElement = document.querySelector('#max') as HTMLInputElement;
 
-num1Value!: number;
-num2Value!: number;
-num3Value!: number;
-num4Value!: number;
+sumValue: number = 0;
+avrValue: number = 0;
+minValue: number = 0;
+maxValue: number = 0;
 
-sumValue!: number;
-avrValue!: number;
-minValue!: number;
-maxValue!: number;
+error: boolean = false;
+errorIcon: HTMLSpanElement = document.createElement('span');
 
 constructor(){
-    this.getElements();
-    this.listenInputs();
+    this.errorIcon.classList.add("icon-error-alt");
+    this.createInputs();
+    this.listenInputs()
 }
 
-getElements = () => {
+createInputs(){
 
-    this.num1 = document.querySelector('#num1') as HTMLInputElement;
-    this.num2 = document.querySelector('#num2') as HTMLInputElement;
-    this.num3 = document.querySelector('#num3') as HTMLInputElement;
-    this.num4 = document.querySelector('#num4') as HTMLInputElement;
+    this.error = true;
+    this.howManyNumbers = +(document.querySelector('#how-many-numbers') as HTMLInputElement).value;
 
-    this.sum = document.querySelector('#sum') as HTMLInputElement;
-    this.avr = document.querySelector('#avr') as HTMLInputElement;
-    this.min = document.querySelector('#min') as HTMLInputElement;
-    this.max = document.querySelector('#max') as HTMLInputElement;
+    const startButton: HTMLButtonElement = document.querySelector('#start-button') as HTMLButtonElement;
+    const howManyNumbersInput: HTMLInputElement = document.querySelector('#how-many-numbers') as HTMLInputElement;
 
-    this.num1Value = +this.num1.value;
-    this.num2Value = +this.num2.value;
-    this.num3Value = +this.num3.value;
-    this.num4Value = +this.num4.value;
+    document.querySelector('#start-button')?.parentElement?.removeChild(startButton);
+    document.querySelector('#how-many-numbers')?.parentElement?.removeChild(howManyNumbersInput);
+
+    for(let i: number = 0; i < this.howManyNumbers; i++)
+    { 
+        const newInput: HTMLInputElement = document.createElement('input');
+        newInput.type = "number";
+        this.inputs.push(newInput);
+        this.setsData.appendChild(newInput);
+    }
 }
 
-getElementsOperateAndAssign = () => {
+getValues(){
+    this.inputValues = [];
+    for(let i: number = 0; i < this.howManyNumbers; i++)
+    {
+        if(this.inputs[i].value == "")
+        {
+            this.error = true;
+            break;
+        }
+        else
+        {
+            this.error = false;
+            this.inputValues.push(+this.inputs[i].value);
+        }
+    }
 
-    this.getElements();
+}
 
-    this.sumValue = this.num1Value + this.num2Value + this.num3Value + this.num4Value;
-    this.avrValue = this.sumValue/4;
-    this.minValue = Math.min(this.num1Value, this.num2Value, this.num3Value, this.num4Value);
-    this.maxValue = Math.max(this.num1Value, this.num2Value, this.num3Value, this.num4Value);
+getValuesOperateAndAssign = () => {
+
+    
+    this.sumValue=0;
+    this.getValues();
+
+    if(!this.error)
+    {
+    if(document.querySelector('#error-element')?.firstElementChild) document.querySelector('#error-element')?.removeChild(this.errorIcon);
+
+    this.inputValues.forEach(value => {
+        this.sumValue += value;
+    });
+
+    this.avrValue = this.sumValue/this.howManyNumbers;
+
+    this.minValue = Math.min.apply(null, this.inputValues); 
+    this.maxValue = Math.max.apply(null, this.inputValues); 
 
     this.assignElements(this.sumValue, this.avrValue, this.minValue, this.maxValue);
+}
+else{
+document.querySelector('#error-element')?.appendChild(this.errorIcon);
+this.assignEmptys();
+}
 }
 
 assignElements(_sum: number, _avr: number, _min: number, _max:number)
@@ -63,14 +97,22 @@ assignElements(_sum: number, _avr: number, _min: number, _max:number)
     this.max.value = _max.toString();
 }
 
+assignEmptys()
+{
+    this.sum.value = "";
+    this.avr.value = "";
+    this.min.value = "";
+    this.max.value = "";
+}
+
 listenInputs(){
-    this.num1.addEventListener('input', () => this.getElementsOperateAndAssign());
-    this.num2.addEventListener('input', () => this.getElementsOperateAndAssign());
-    this.num3.addEventListener('input', () => this.getElementsOperateAndAssign());
-    this.num4.addEventListener('input', () => this.getElementsOperateAndAssign());
+    for(let inputNumber: number = 0; inputNumber < this.howManyNumbers; inputNumber++)
+    {
+    this.inputs[inputNumber].addEventListener('input', () => this.getValuesOperateAndAssign());
+    }
+}
 }
 
-
-}
-
+const startApp = () => {
 const app = new App();
+}
