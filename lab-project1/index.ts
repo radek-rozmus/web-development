@@ -4,6 +4,7 @@ howManyNumbers!: number;
 setsData: HTMLDivElement = document.querySelector('#sets-data') as HTMLDivElement;
 inputs: HTMLInputElement[] = [];
 inputValues: number[] = [];
+buttons: HTMLButtonElement[] = [];
 
 sum: HTMLInputElement = document.querySelector('#sum') as HTMLInputElement;
 avr: HTMLInputElement = document.querySelector('#avr') as HTMLInputElement;
@@ -37,12 +38,37 @@ createInputs(){
 
     for(let i: number = 0; i < this.howManyNumbers; i++)
     { 
+        const newDiv: HTMLDivElement = document.createElement('div');
         const newInput: HTMLInputElement = document.createElement('input');
+        const newButton: HTMLButtonElement = document.createElement('button');
+
         newInput.type = "number";
+        newButton.textContent = "X";
+        newButton.onclick = () => {
+            const i: number = this.inputs.indexOf(newInput);
+            const b: number = this.buttons.indexOf(newButton);
+
+            this.inputs.splice(i, 1);
+            this.inputValues.splice(i, 1);
+            this.buttons.splice(b, 1);
+
+            newDiv.removeChild(newInput);
+            newDiv.removeChild(newButton);
+
+            this.howManyNumbers -= 1;
+            this.getValuesOperateAndAssign();
+        };
+
         this.inputs.push(newInput);
-        this.setsData.appendChild(newInput);
+        this.buttons.push(newButton);
+
+        newDiv.appendChild(newButton);
+        newDiv.appendChild(newInput);
+
+        this.setsData.appendChild(newDiv);
     }
 }
+
 
 getValues(){
     this.inputValues = [];
@@ -63,7 +89,6 @@ getValues(){
 }
 
 getValuesOperateAndAssign = () => {
-
     
     this.sumValue=0;
     this.getValues();

@@ -5,6 +5,7 @@ var App = /** @class */ (function () {
         this.setsData = document.querySelector('#sets-data');
         this.inputs = [];
         this.inputValues = [];
+        this.buttons = [];
         this.sum = document.querySelector('#sum');
         this.avr = document.querySelector('#avr');
         this.min = document.querySelector('#min');
@@ -40,6 +41,7 @@ var App = /** @class */ (function () {
         this.listenInputs();
     }
     App.prototype.createInputs = function () {
+        var _this = this;
         var _a, _b, _c, _d;
         this.error = true;
         this.howManyNumbers = +document.querySelector('#how-many-numbers').value;
@@ -47,11 +49,32 @@ var App = /** @class */ (function () {
         var howManyNumbersInput = document.querySelector('#how-many-numbers');
         (_b = (_a = document.querySelector('#start-button')) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.removeChild(startButton);
         (_d = (_c = document.querySelector('#how-many-numbers')) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.removeChild(howManyNumbersInput);
-        for (var i = 0; i < this.howManyNumbers; i++) {
+        var _loop_1 = function (i) {
+            var newDiv = document.createElement('div');
             var newInput = document.createElement('input');
+            var newButton = document.createElement('button');
             newInput.type = "number";
-            this.inputs.push(newInput);
-            this.setsData.appendChild(newInput);
+            newButton.textContent = "X";
+            newButton.onclick = function () {
+                var i = _this.inputs.indexOf(newInput);
+                var b = _this.buttons.indexOf(newButton);
+                _this.inputs.splice(i, 1);
+                _this.inputValues.splice(i, 1);
+                _this.buttons.splice(b, 1);
+                newDiv.removeChild(newInput);
+                newDiv.removeChild(newButton);
+                _this.howManyNumbers -= 1;
+                _this.getValuesOperateAndAssign();
+            };
+            this_1.inputs.push(newInput);
+            this_1.buttons.push(newButton);
+            newDiv.appendChild(newButton);
+            newDiv.appendChild(newInput);
+            this_1.setsData.appendChild(newDiv);
+        };
+        var this_1 = this;
+        for (var i = 0; i < this.howManyNumbers; i++) {
+            _loop_1(i);
         }
     };
     App.prototype.getValues = function () {
