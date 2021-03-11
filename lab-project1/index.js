@@ -36,6 +36,7 @@ var App = /** @class */ (function () {
                 _this.assignEmptys();
             }
         };
+        this.errorIcon.setAttribute("title", "Uzupełnij wszystkie pola wartościami liczbowymi.");
         this.errorIcon.classList.add("icon-error-alt");
         this.createInputs();
         this.listenInputs();

@@ -20,6 +20,7 @@ error: boolean = false;
 errorIcon: HTMLSpanElement = document.createElement('span');
 
 constructor(){
+    this.errorIcon.setAttribute("title", "Uzupełnij wszystkie pola wartościami liczbowymi.");
     this.errorIcon.classList.add("icon-error-alt");
     this.createInputs();
     this.listenInputs()
