@@ -55,6 +55,7 @@ createInputs(){
 
             newDiv.removeChild(newInput);
             newDiv.removeChild(newButton);
+            newDiv.parentElement?.removeChild(newDiv);
 
             this.howManyNumbers -= 1;
             this.getValuesOperateAndAssign();

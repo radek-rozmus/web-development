@@ -57,6 +57,7 @@ var App = /** @class */ (function () {
             newInput.type = "number";
             newButton.textContent = "X";
             newButton.onclick = function () {
+                var _a;
                 var i = _this.inputs.indexOf(newInput);
                 var b = _this.buttons.indexOf(newButton);
                 _this.inputs.splice(i, 1);
@@ -64,6 +65,7 @@ var App = /** @class */ (function () {
                 _this.buttons.splice(b, 1);
                 newDiv.removeChild(newInput);
                 newDiv.removeChild(newButton);
+                (_a = newDiv.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(newDiv);
                 _this.howManyNumbers -= 1;
                 _this.getValuesOperateAndAssign();
             };
