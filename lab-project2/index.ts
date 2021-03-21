@@ -33,7 +33,7 @@ class Sound {
     path: string;
     sound: HTMLAudioElement;
 
-    constructor(name: string, path: string, where: HTMLElement){
+    constructor(name: string, path: string, where: HTMLDivElement){
         this.name = name;
         this.path = path;
         this.sound = document.createElement('audio');
@@ -43,4 +43,4 @@ class Sound {
 
 }
 
-() => new App();
+const app = new App();

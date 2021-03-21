@@ -1,7 +1,16 @@
 var App = /** @class */ (function () {
     function App() {
         this.root = document.getElementById('root');
-        this.boomSound = new Sound("boom", "./sounds/boom", this.root);
+        debugger;
+        this.boomSound = new Sound("boom", "./sounds/boom.wav", this.root);
+        this.clapSound = new Sound("clap", "./sounds/clap.wav", this.root);
+        this.hihatSound = new Sound("hihat", "./sounds/hihat.wav", this.root);
+        this.kickSound = new Sound("kick", "./sounds/kick", this.root);
+        this.openhatSound = new Sound("openhat", "./sounds/openhat", this.root);
+        this.rideSound = new Sound("ride", "./sounds/ride", this.root);
+        this.snareSound = new Sound("snare", "./sounds/snare", this.root);
+        this.tinkSound = new Sound("tink", "./sounds/tink", this.root);
+        this.tomSound = new Sound("tom", "./sounds/tom", this.root);
     }
     return App;
 }());
@@ -15,4 +24,4 @@ var Sound = /** @class */ (function () {
     }
     return Sound;
 }());
-(function () { return new App(); });
+var app = new App();
