@@ -25,7 +25,31 @@ var App = /** @class */ (function () {
             _this.tomSoundButton = new SoundButton("tom", "f", "./sounds/tom.wav", _this.drumkit, _this.root, _this);
             _this.sounds.push({ key: _this.tomSoundButton.key, sound: _this.tomSoundButton.sound });
         };
+        this.createChannels = function () {
+            _this.channel1 = new Channel("channel1", _this.drumkit, _this);
+        };
+        this.playChosenSound = function (e) {
+            _this.sounds.forEach(function (sound) {
+                if (e.key.toLowerCase() === sound.key) {
+                    sound.sound.playSound();
+                }
+            });
+        };
+        this.playChosenSoundByKey = function (key) {
+            _this.sounds.forEach(function (sound) {
+                if (key.toLowerCase() === sound.key) {
+                    sound.sound.playSound();
+                }
+            });
+        };
+        document.body.addEventListener('keypress', function (e) {
+            var key = e.key;
+            var time = e.timeStamp;
+            _this.playChosenSound(e);
+            _this.channel1.recording.push({ key: key, time: time });
+        });
         this.createSoundButtons();
+        this.createChannels();
     }
     return App;
 }());
@@ -53,9 +77,33 @@ var SoundButton = /** @class */ (function () {
         this.sound = new Sound(name, key, path, whereAudio);
         this.soundButton = document.createElement('button');
         this.soundButton.textContent = this.key;
-        this.soundButton.addEventListener("click", function () { return _this.sound.playSound(); });
+        this.soundButton.addEventListener("click", function (e) {
+            var key = _this.key;
+            var time = e.timeStamp;
+            var sound = _this.sound;
+            _this.sound.playSound();
+            context.channel1.recording.push({ key: key, time: time });
+        });
         whereButton.appendChild(this.soundButton);
     }
     return SoundButton;
+}());
+var Channel = /** @class */ (function () {
+    function Channel(name, where, context) {
+        var _this = this;
+        this.recording = [];
+        this.playChannel = function () {
+            _this.recording.forEach(function (obj) {
+                setTimeout(function () { return _this.context.playChosenSoundByKey(obj.key); }, obj.time);
+            });
+        };
+        this.name = name;
+        this.context = context;
+        this.playChannelButton = document.createElement('button');
+        this.playChannelButton.textContent = "Play" + this.name;
+        this.playChannelButton.addEventListener('click', function () { return _this.playChannel(); });
+        where.appendChild(this.playChannelButton);
+    }
+    return Channel;
 }());
 var app = new App();
