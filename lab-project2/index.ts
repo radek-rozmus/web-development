@@ -14,6 +14,9 @@ drumkit: HTMLDivElement = document.getElementById('drumkit') as HTMLDivElement;
 
 
 channel1!: Channel;
+channel2!: Channel;
+channel3!: Channel;
+channel4!: Channel;
 
 boomSoundButton!: SoundButton;
 clapSoundButton!: SoundButton;
@@ -31,8 +34,8 @@ constructor(){
 document.body.addEventListener('keypress', e => {
     const key = e.key;
     const time = e.timeStamp;
-    this.playChosenSound(e)
-    this.channel1.recording.push({key, time})
+    this.playChosenSound(e);
+    this.saveToRecordingChannels(key, time);
 });
 this.createSoundButtons();
 this.createChannels();
@@ -71,8 +74,33 @@ this.sounds.push({key: this.tomSoundButton.key, sound: this.tomSoundButton.sound
 
 createChannels = () => {
 
-    this.channel1 = new Channel("channel1", this.drumkit, this); 
+    const channels = document.createElement('div');
+    this.root.appendChild(channels);
+
+    this.channel1 = new Channel("channel1", channels, this); 
+    this.channel2 = new Channel("channel2", channels, this); 
+    this.channel3 = new Channel("channel3", channels, this); 
+    this.channel4 = new Channel("channel4", channels, this); 
     }
+
+saveToRecordingChannels = (key: string, time: number) => {
+    if(this.channel1.isRecording === true) {
+        if(time-this.channel1.recordingStartTime <= 10000)this.channel1.recording.push({key, time: time-this.channel1.recordingStartTime});
+        else this.channel1.isRecording = false;
+    }
+    if(this.channel2.isRecording === true) {
+        if(time-this.channel2.recordingStartTime <= 10000)this.channel2.recording.push({key, time: time-this.channel2.recordingStartTime});
+        else this.channel2.isRecording = false;
+    }
+    if(this.channel3.isRecording === true) {
+        if(time-this.channel3.recordingStartTime <= 10000)this.channel3.recording.push({key, time: time-this.channel3.recordingStartTime});
+        else this.channel3.isRecording = false;
+    }
+    if(this.channel4.isRecording === true) {
+        if(time-this.channel4.recordingStartTime <= 10000)this.channel4.recording.push({key, time: time-this.channel4.recordingStartTime});
+        else this.channel4.isRecording = false;
+    }
+}
 
 playChosenSound = (e: KeyboardEvent) => {
 
@@ -135,7 +163,7 @@ class SoundButton {
             const time = e.timeStamp;
             const sound = this.sound
             this.sound.playSound();
-            context.channel1.recording.push({key, time})
+            context.saveToRecordingChannels(key, time);
         });
         whereButton.appendChild(this.soundButton);
     }
@@ -145,19 +173,42 @@ class SoundButton {
 class Channel {
     name: string;
     recording: ChannelStampObject[] = [];
+    isRecording = false;
+    recordingStartTime: number = 0;
+    channelComponent: HTMLDivElement;
     playChannelButton: HTMLButtonElement;
+    recordChannelButton: HTMLButtonElement;
     context: App;
+
 
     constructor(name: string, where: HTMLDivElement, context: App){
         this.name = name;
         this.context = context;
+
+        this.channelComponent = document.createElement('div');
+        where.appendChild(this.channelComponent);
+
+        this.recordChannelButton = document.createElement('button');
+        this.recordChannelButton.textContent = "Record " + this.name;
+        this.recordChannelButton.addEventListener('click', (e)=>this.recordButtonClick(e))
+        this.channelComponent.appendChild(this.recordChannelButton);
+        
+
+        //play channel button
         this.playChannelButton = document.createElement('button');
-        this.playChannelButton.textContent = "Play" + this.name;
-        this.playChannelButton.addEventListener('click', ()=>this.playChannel())
-        where.appendChild(this.playChannelButton);
+        this.playChannelButton.textContent = "Play " + this.name;
+        this.playChannelButton.addEventListener('click', ()=>this.playChannelClick())
+        this.channelComponent.appendChild(this.playChannelButton);
+
     }
 
-    playChannel = () => {
+    recordButtonClick = (e: MouseEvent) => {
+        this.isRecording = true;
+        this.recording = [];
+        this.recordingStartTime = e.timeStamp;
+    }
+
+    playChannelClick = () => {
         this.recording.forEach(obj => {
             setTimeout(() => this.context.playChosenSoundByKey(obj.key), obj.time);
         });
