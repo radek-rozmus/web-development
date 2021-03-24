@@ -1,0 +1,25 @@
+body {
+  background-color: #444;
+}
+.drumkit {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.channels {
+  width: 100%;
+}
+.sound-button {
+  border-radius: 12px;
+  color: #efefef;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: medium;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-color: #3c854e;
+  margin: 12px;
+}
