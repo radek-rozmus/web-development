@@ -82,10 +82,10 @@ createChannels = () => {
     channels.classList.add("channels");
     this.drumkit.appendChild(channels);
 
-    this.channel1 = new Channel("channel1", channels, this); 
-    this.channel2 = new Channel("channel2", channels, this); 
-    this.channel3 = new Channel("channel3", channels, this); 
-    this.channel4 = new Channel("channel4", channels, this); 
+    this.channel1 = new Channel("Channel 1", channels, this); 
+    this.channel2 = new Channel("Channel 2", channels, this); 
+    this.channel3 = new Channel("Channel 3", channels, this); 
+    this.channel4 = new Channel("Channel 4", channels, this); 
     }
 
 saveToRecordingChannels = (key: string, time: number) => {
@@ -149,7 +149,8 @@ class Sound {
     playSound = () => {
         (() => {
             this.button.style.backgroundColor = "#529c5f";
-            const timeout = setTimeout(()=>{this.button.style.backgroundColor = "#3c854e"; clearTimeout(timeout);},400)
+            this.button.classList.remove("sound-button-transition-effect");
+            const timeout = setTimeout(()=>{this.button.style.backgroundColor = "#3c854e"; this.button.classList.add("sound-button-transition-effect"); clearTimeout(timeout);},400)
         })();
         this.sound.currentTime = 0;
         this.sound.play()
@@ -200,19 +201,32 @@ class Channel {
         this.context = context;
 
         this.channelComponent = document.createElement('div');
+        this.channelComponent.className = "channel-component";
         where.appendChild(this.channelComponent);
 
         this.recordChannelButton = document.createElement('button');
-        this.recordChannelButton.textContent = "Record " + this.name;
+        const iconRecord = document.createElement('i');
+        iconRecord.className = "icon-record";
+        this.recordChannelButton.className = "record-button channel-button";
+        this.recordChannelButton.appendChild(iconRecord);
+
         this.recordChannelButton.addEventListener('click', (e)=>this.recordButtonClick(e))
         this.channelComponent.appendChild(this.recordChannelButton);
         
 
         //play channel button
         this.playChannelButton = document.createElement('button');
-        this.playChannelButton.textContent = "Play " + this.name;
+        const iconPlay = document.createElement('i');
+        iconPlay.className = "icon-play";
+        this.playChannelButton.className = "play-button channel-button";
+        this.playChannelButton.appendChild(iconPlay);
         this.playChannelButton.addEventListener('click', ()=>this.playChannelClick())
         this.channelComponent.appendChild(this.playChannelButton);
+
+        const tag = document.createElement('span');
+        tag.textContent = name;
+        tag.className = "channel-label";
+        this.channelComponent.appendChild(tag);
 
     }
 

@@ -1,5 +1,6 @@
 body {
   background-color: #444;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .drumkit {
   width: 100%;
@@ -9,17 +10,107 @@ body {
 }
 .channels {
   width: 100%;
+  margin-top: 20px;
+  text-align: center;
 }
 .sound-button {
   border-radius: 12px;
   color: #efefef;
   text-transform: uppercase;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 24px;
-  font-weight: medium;
-  width: 100px;
-  height: 100px;
+  font-size: 32px;
+  font-weight: 500;
+  width: 116px;
+  height: 116px;
   display: inline-block;
   background-color: #3c854e;
   margin: 12px;
+}
+
+.sound-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.sound-button-transition-effect {
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -ms-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.channel-component {
+  width: 348px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #efefef;
+  text-align: left;
+  border-radius: 12px;
+}
+
+.play-button {
+  background-color: #c4ffc9;
+  color: #005c08;
+}
+
+.record-button {
+  background-color: #ffd9d9;
+  color: #ff0000;
+}
+.channel-button {
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+}
+.play-button:focus {
+  outline: none;
+  box-shadow: none;
+  animation: play-animation 10s forwards;
+}
+.record-button:focus {
+  outline: none;
+  box-shadow: none;
+  animation: record-animation 10s forwards;
+}
+.channel-label {
+  margin-left: 12px;
+  color: #efefef;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@keyframes play-animation {
+  4% {
+    background-color: #005c08;
+    color: #efefef;
+  }
+  96% {
+    background-color: #005c08;
+    color: #efefef;
+  }
+  100% {
+    background-color: #c4ffc9;
+    color: #005c08;
+  }
+}
+
+@keyframes record-animation {
+  4% {
+    background-color: #ff0000;
+    color: #efefef;
+  }
+  96% {
+    background-color: #ff0000;
+    color: #efefef;
+  }
+  100% {
+    background-color: #ffd9d9;
+    color: #ff0000;
+  }
 }

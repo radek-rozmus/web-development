@@ -32,10 +32,10 @@ var App = /** @class */ (function () {
             var channels = document.createElement('div');
             channels.classList.add("channels");
             _this.drumkit.appendChild(channels);
-            _this.channel1 = new Channel("channel1", channels, _this);
-            _this.channel2 = new Channel("channel2", channels, _this);
-            _this.channel3 = new Channel("channel3", channels, _this);
-            _this.channel4 = new Channel("channel4", channels, _this);
+            _this.channel1 = new Channel("Channel 1", channels, _this);
+            _this.channel2 = new Channel("Channel 2", channels, _this);
+            _this.channel3 = new Channel("Channel 3", channels, _this);
+            _this.channel4 = new Channel("Channel 4", channels, _this);
         };
         this.saveToRecordingChannels = function (key, time) {
             if (_this.channel1.isRecording === true) {
@@ -94,7 +94,8 @@ var Sound = /** @class */ (function () {
         this.playSound = function () {
             (function () {
                 _this.button.style.backgroundColor = "#529c5f";
-                var timeout = setTimeout(function () { _this.button.style.backgroundColor = "#3c854e"; clearTimeout(timeout); }, 400);
+                _this.button.classList.remove("sound-button-transition-effect");
+                var timeout = setTimeout(function () { _this.button.style.backgroundColor = "#3c854e"; _this.button.classList.add("sound-button-transition-effect"); clearTimeout(timeout); }, 400);
             })();
             _this.sound.currentTime = 0;
             _this.sound.play();
@@ -148,16 +149,27 @@ var Channel = /** @class */ (function () {
         this.name = name;
         this.context = context;
         this.channelComponent = document.createElement('div');
+        this.channelComponent.className = "channel-component";
         where.appendChild(this.channelComponent);
         this.recordChannelButton = document.createElement('button');
-        this.recordChannelButton.textContent = "Record " + this.name;
+        var iconRecord = document.createElement('i');
+        iconRecord.className = "icon-record";
+        this.recordChannelButton.className = "record-button channel-button";
+        this.recordChannelButton.appendChild(iconRecord);
         this.recordChannelButton.addEventListener('click', function (e) { return _this.recordButtonClick(e); });
         this.channelComponent.appendChild(this.recordChannelButton);
         //play channel button
         this.playChannelButton = document.createElement('button');
-        this.playChannelButton.textContent = "Play " + this.name;
+        var iconPlay = document.createElement('i');
+        iconPlay.className = "icon-play";
+        this.playChannelButton.className = "play-button channel-button";
+        this.playChannelButton.appendChild(iconPlay);
         this.playChannelButton.addEventListener('click', function () { return _this.playChannelClick(); });
         this.channelComponent.appendChild(this.playChannelButton);
+        var tag = document.createElement('span');
+        tag.textContent = name;
+        tag.className = "channel-label";
+        this.channelComponent.appendChild(tag);
     }
     return Channel;
 }());
