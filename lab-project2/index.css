@@ -1,12 +1,12 @@
 body {
   background-color: #444;
   font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 .drumkit {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
 }
 .channels {
   width: 100%;
@@ -46,6 +46,7 @@ body {
   border: 2px solid #efefef;
   text-align: left;
   border-radius: 12px;
+  background-color: #777;
 }
 
 .play-button {
@@ -67,50 +68,40 @@ body {
   font-size: 16px;
   border: none;
   border-radius: 12px;
+  transition: all 0.4s;
 }
 .play-button:focus {
   outline: none;
   box-shadow: none;
-  animation: play-animation 10s forwards;
 }
 .record-button:focus {
   outline: none;
   box-shadow: none;
-  animation: record-animation 10s forwards;
 }
 .channel-label {
   margin-left: 12px;
   color: #efefef;
   text-transform: uppercase;
   letter-spacing: 2px;
+  cursor: default;
 }
 
-@keyframes play-animation {
-  4% {
-    background-color: #005c08;
-    color: #efefef;
-  }
-  96% {
-    background-color: #005c08;
-    color: #efefef;
-  }
-  100% {
-    background-color: #c4ffc9;
-    color: #005c08;
-  }
+.play-all-button {
+  width: 392px;
+  margin: 5 auto;
+  height: 40px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #c4ffc9;
+  color: #005c08;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.4s;
 }
-
-@keyframes record-animation {
-  4% {
-    background-color: #ff0000;
-    color: #efefef;
-  }
-  96% {
-    background-color: #ff0000;
-    color: #efefef;
-  }
-  100% {
-    background-color: #ffd9d9;
-    color: #ff0000;
-  }
+.play-all-button {
+  outline: none;
+  box-shadow: none;
 }

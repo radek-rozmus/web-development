@@ -30,7 +30,10 @@ tomSoundButton!: SoundButton;
 
 sounds: SoundObject[] = [];
 
+playAllButton!: PlayAllButton;
+
 constructor(){
+this.root.onselectstart = () => {return false;}
 document.body.addEventListener('keypress', e => {
     const key = e.key;
     const time = e.timeStamp;
@@ -85,7 +88,9 @@ createChannels = () => {
     this.channel1 = new Channel("Channel 1", channels, this); 
     this.channel2 = new Channel("Channel 2", channels, this); 
     this.channel3 = new Channel("Channel 3", channels, this); 
-    this.channel4 = new Channel("Channel 4", channels, this); 
+    this.channel4 = new Channel("Channel 4", channels, this);
+    
+    this.playAllButton = new PlayAllButton([this.channel1, this.channel2, this.channel3, this.channel4], this.root);
     }
 
 saveToRecordingChannels = (key: string, time: number) => {
@@ -234,14 +239,49 @@ class Channel {
             this.isRecording = true;
             this.recording = [];
             this.recordingStartTime = e.timeStamp;
+            (() => {
+                this.recordChannelButton.style.backgroundColor = "#ff0000";
+                this.recordChannelButton.style.color = "#efefef";
+                const timeout = setTimeout(()=>{this.recordChannelButton.style.backgroundColor = "#ffd9d9"; this.recordChannelButton.style.color = "#ff0000"; clearTimeout(timeout);},10000)
+            })();
     }
 
     playChannelClick = () => {
+        (() => {
+            this.playChannelButton.style.backgroundColor = "#005c08";
+            this.playChannelButton.style.color = "#efefef";
+            const timeout = setTimeout(()=>{this.playChannelButton.style.backgroundColor = "#c4ffc9"; this.playChannelButton.style.color = "#005c08"; clearTimeout(timeout);},10000)
+        })();
         this.recording.forEach(obj => {
             setTimeout(() => this.context.playChosenSoundByKey(obj.key), obj.time);
         });
     }
 
 }
+
+    class PlayAllButton{
+        button: HTMLButtonElement;
+        channels: Channel[] = [];
+
+        constructor(channels: Channel[], where: HTMLDivElement){
+            this.button = document.createElement('button');
+            this.button.className = "play-all-button";
+            this.button.textContent = "play all";
+            this.button.addEventListener('click', ()=>{
+                (() => {
+                    this.button.style.backgroundColor = "#005c08";
+                    this.button.style.color = "#efefef";
+                    const timeout = setTimeout(()=>{this.button.style.backgroundColor = "#c4ffc9"; this.button.style.color = "#005c08"; clearTimeout(timeout);},10000)
+                })();
+                channels.forEach(channel => {
+                    const clickEvent = new MouseEvent('click');
+                    channel.playChannelButton.dispatchEvent(clickEvent);
+                });
+            });
+            where.appendChild(this.button);
+        }
+
+
+    }
 
 const app = new App();

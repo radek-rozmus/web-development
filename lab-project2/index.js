@@ -36,6 +36,7 @@ var App = /** @class */ (function () {
             _this.channel2 = new Channel("Channel 2", channels, _this);
             _this.channel3 = new Channel("Channel 3", channels, _this);
             _this.channel4 = new Channel("Channel 4", channels, _this);
+            _this.playAllButton = new PlayAllButton([_this.channel1, _this.channel2, _this.channel3, _this.channel4], _this.root);
         };
         this.saveToRecordingChannels = function (key, time) {
             if (_this.channel1.isRecording === true) {
@@ -77,6 +78,7 @@ var App = /** @class */ (function () {
                 }
             });
         };
+        this.root.onselectstart = function () { return false; };
         document.body.addEventListener('keypress', function (e) {
             var key = e.key;
             var time = e.timeStamp;
@@ -140,8 +142,18 @@ var Channel = /** @class */ (function () {
             _this.isRecording = true;
             _this.recording = [];
             _this.recordingStartTime = e.timeStamp;
+            (function () {
+                _this.recordChannelButton.style.backgroundColor = "#ff0000";
+                _this.recordChannelButton.style.color = "#efefef";
+                var timeout = setTimeout(function () { _this.recordChannelButton.style.backgroundColor = "#ffd9d9"; _this.recordChannelButton.style.color = "#ff0000"; clearTimeout(timeout); }, 10000);
+            })();
         };
         this.playChannelClick = function () {
+            (function () {
+                _this.playChannelButton.style.backgroundColor = "#005c08";
+                _this.playChannelButton.style.color = "#efefef";
+                var timeout = setTimeout(function () { _this.playChannelButton.style.backgroundColor = "#c4ffc9"; _this.playChannelButton.style.color = "#005c08"; clearTimeout(timeout); }, 10000);
+            })();
             _this.recording.forEach(function (obj) {
                 setTimeout(function () { return _this.context.playChosenSoundByKey(obj.key); }, obj.time);
             });
@@ -172,5 +184,27 @@ var Channel = /** @class */ (function () {
         this.channelComponent.appendChild(tag);
     }
     return Channel;
+}());
+var PlayAllButton = /** @class */ (function () {
+    function PlayAllButton(channels, where) {
+        var _this = this;
+        this.channels = [];
+        this.button = document.createElement('button');
+        this.button.className = "play-all-button";
+        this.button.textContent = "play all";
+        this.button.addEventListener('click', function () {
+            (function () {
+                _this.button.style.backgroundColor = "#005c08";
+                _this.button.style.color = "#efefef";
+                var timeout = setTimeout(function () { _this.button.style.backgroundColor = "#c4ffc9"; _this.button.style.color = "#005c08"; clearTimeout(timeout); }, 10000);
+            })();
+            channels.forEach(function (channel) {
+                var clickEvent = new MouseEvent('click');
+                channel.playChannelButton.dispatchEvent(clickEvent);
+            });
+        });
+        where.appendChild(this.button);
+    }
+    return PlayAllButton;
 }());
 var app = new App();
