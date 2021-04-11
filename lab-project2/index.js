@@ -1,3 +1,4 @@
+"use strict";
 var App = /** @class */ (function () {
     function App() {
         var _this = this;
