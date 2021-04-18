@@ -1,5 +1,5 @@
 import { App } from "../App/App";
-import { Weather, k2c } from "../../types/Weather";
+import { Weather} from "../../types/Weather";
 
 
 export class City {
@@ -12,12 +12,12 @@ export class City {
   constructor(
     name: string,
     where: HTMLDivElement,
-    key: string,
+    weather: Promise<Weather>,
     app: App
   ) {
     this.name = name;
     this.app = app;
-    this.weatherExtracted = this.getWeather(key);
+    this.weatherExtracted = weather;
     this.tileInit(where);
   }
 
@@ -70,24 +70,5 @@ export class City {
     this.tile.appendChild(tileHumilidity);
     this.tile.appendChild(this.removeButton);
     where.appendChild(this.tile);
-  }
-
-
-  async getWeather(key: string): Promise<Weather> {
-    const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${this.name}&APPID=${key}`;
-    const weatherResponse = await fetch(openWeatherUrl).then((response) => {
-      if (response.ok) return response;
-      else throw Error("zepsuło się");
-    });
-    const weatherData = await weatherResponse.json();
-    const weatherObject: Weather = {
-        temperature: k2c(weatherData.main.temp),
-        description: weatherData.weather[0].main,
-        pressure: weatherData.main.pressure,
-        humidity: weatherData.main.humidity
-
-    }
-    console.log(weatherObject)
-    return weatherObject;
   }
 }

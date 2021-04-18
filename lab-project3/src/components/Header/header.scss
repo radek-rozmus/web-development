@@ -80,3 +80,14 @@
 .color-span{
   color: $blueSecond;
 }
+.communicate{
+  top: 11px;
+  width: 500px;
+  position: absolute;
+  right: 440px;
+  height: 30px;
+  background-color: $colorBackground;
+  text-align: right;
+  color: $colorRed;
+  padding-top: 8px;
+}

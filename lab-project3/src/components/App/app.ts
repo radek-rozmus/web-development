@@ -1,4 +1,5 @@
 import { City } from '../City/City';
+import { Weather, k2c } from "../../types/Weather";
 
 export class App {
   opwApiKey = "3cc750bd101b9db44c2f711d4c46b211";
@@ -11,6 +12,7 @@ export class App {
   addCityButton: HTMLButtonElement;
 
   inputWrapper: HTMLDivElement;
+  communicate: HTMLDivElement;
 
   cityNames: string[] = [];
   cities: City[] = [];
@@ -30,13 +32,14 @@ export class App {
     this.inputWrapper = document.querySelector(".input-wrapper") as HTMLDivElement;
     this.addCityInput = document.querySelector(".add-city-input") as HTMLInputElement;
     this.addCityButton = document.querySelector(".add-city-button") as HTMLButtonElement;
+    this.communicate = document.querySelector(".communicate") as HTMLDivElement;
 
     this.addCityButton.onclick = () => {
       const cityName = this.addCityInput.value;
       this.addCityInput.value = "";
-      const city = new City(cityName, this.wrapper, "73a5f6b658c088a9f29cf8b6d4ce438e", this);
+      const weather = this.getWeather(cityName, this.opwApiKey, true);
+      const city = new City(cityName, this.wrapper, weather, this);
       this.cities.push(city);
-      this.cityNames.push(cityName);
       this.saveData(this.cityNames);
     }
   }
@@ -51,10 +54,35 @@ export class App {
       return [];
     }
   }
+
+  async getWeather(name:string, key: string, mode: boolean): Promise<Weather> | null{
+    const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${name}&APPID=${key}`;
+    const weatherResponse = await fetch(openWeatherUrl).then((response) => {
+      if (response.ok) {
+        if(mode)this.cityNames.push(name);
+        this.communicate.innerText = ``;
+        return response;
+      }
+      else {
+        this.communicate.innerText = `Nie znaleziono ${name}.`;
+        throw Error('placki');
+      }
+    });
+    const weatherData = await weatherResponse.json();
+    const weatherObject: Weather = {
+        temperature: k2c(weatherData.main.temp),
+        description: weatherData.weather[0].main,
+        pressure: weatherData.main.pressure,
+        humidity: weatherData.main.humidity
+    }
+    console.log(weatherObject)
+    return weatherObject;
+  }
   
   renderCities(){
     this.cityNames.forEach(cityName => {
-      const newCity = new City(cityName, this.wrapper, "73a5f6b658c088a9f29cf8b6d4ce438e", this)
+      const weather = this.getWeather(cityName, this.opwApiKey, false);
+      const newCity = new City(cityName, this.wrapper, weather, this)
       this.cities.push(newCity);
     });
   }

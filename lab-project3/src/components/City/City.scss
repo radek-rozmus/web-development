@@ -46,7 +46,7 @@
     font-size: 14px;
   }
   & .plus-temperature{
-    color: $green;
+    color: $colorRed;
   }
   & .minus-temperature{
     color: $blueSecond;
@@ -58,7 +58,7 @@
   top: 4px;
   right: 4px;
   font-size: 14px;
-  color: #ff6c6c;
+  color: $colorRed;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
