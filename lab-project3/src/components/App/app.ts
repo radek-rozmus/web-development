@@ -1,4 +1,4 @@
-import { City } from '../City/City';
+import { City } from "../City/City";
 import { Weather, k2c } from "../../types/Weather";
 
 export class App {
@@ -21,7 +21,6 @@ export class App {
     this.initApp();
     this.cityNames = this.getData();
     this.renderCities();
-
   }
 
   initApp() {
@@ -29,9 +28,15 @@ export class App {
     this.header = document.querySelector(".header") as HTMLDivElement;
     this.wrapper = document.querySelector(".wrapper") as HTMLDivElement;
 
-    this.inputWrapper = document.querySelector(".input-wrapper") as HTMLDivElement;
-    this.addCityInput = document.querySelector(".add-city-input") as HTMLInputElement;
-    this.addCityButton = document.querySelector(".add-city-button") as HTMLButtonElement;
+    this.inputWrapper = document.querySelector(
+      ".input-wrapper"
+    ) as HTMLDivElement;
+    this.addCityInput = document.querySelector(
+      ".add-city-input"
+    ) as HTMLInputElement;
+    this.addCityButton = document.querySelector(
+      ".add-city-button"
+    ) as HTMLButtonElement;
     this.communicate = document.querySelector(".communicate") as HTMLDivElement;
 
     this.addCityButton.onclick = () => {
@@ -40,8 +45,7 @@ export class App {
       const weather = this.getWeather(cityName, this.opwApiKey, true);
       const city = new City(cityName, this.wrapper, weather, this);
       this.cities.push(city);
-      this.saveData(this.cityNames);
-    }
+    };
   }
   saveData(data: string[]) {
     localStorage.setItem("cityNames", JSON.stringify(data));
@@ -55,34 +59,40 @@ export class App {
     }
   }
 
-  async getWeather(name:string, key: string, mode: boolean): Promise<Weather> | null{
+  async getWeather(
+    name: string,
+    key: string,
+    mode: boolean
+  ): Promise<Weather>{
     const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${name}&APPID=${key}`;
     const weatherResponse = await fetch(openWeatherUrl).then((response) => {
       if (response.ok) {
-        if(mode)this.cityNames.push(name);
-        this.communicate.innerText = ``;
+        if(mode) {
+          this.cityNames.push(name);
+          this.saveData(this.cityNames);
+          this.communicate.innerText = ``
+        };
         return response;
-      }
-      else {
+      } else {
         this.communicate.innerText = `Nie znaleziono ${name}.`;
-        throw Error('placki');
+        throw Error(`Nie znaleziono ${name}.`);
       }
     });
     const weatherData = await weatherResponse.json();
     const weatherObject: Weather = {
-        temperature: k2c(weatherData.main.temp),
-        description: weatherData.weather[0].main,
-        pressure: weatherData.main.pressure,
-        humidity: weatherData.main.humidity
-    }
-    console.log(weatherObject)
+      temperature: k2c(weatherData.main.temp),
+      description: weatherData.weather[0].main,
+      pressure: weatherData.main.pressure,
+      humidity: weatherData.main.humidity,
+    };
+
     return weatherObject;
   }
-  
-  renderCities(){
-    this.cityNames.forEach(cityName => {
+
+  renderCities() {
+    this.cityNames.forEach((cityName) => {
       const weather = this.getWeather(cityName, this.opwApiKey, false);
-      const newCity = new City(cityName, this.wrapper, weather, this)
+      const newCity = new City(cityName, this.wrapper, weather, this);
       this.cities.push(newCity);
     });
   }
