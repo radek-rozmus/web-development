@@ -1,0 +1,66 @@
+@import '../../variables.scss';
+
+.city-tile {
+  position: relative;
+  color: $colorMain;
+  border: 1px solid $colorMain;
+  background-color: $colorBackground;
+  font-size: 18px;
+  height: 200px;
+  width: 140px;
+  margin: 8px;
+  padding: 20px;
+  border-radius: 3px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: inline-block;
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(145, 145, 145, 0.5);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(145, 145, 145, 0.5);
+  box-shadow: 0px 0px 5px 1px rgba(145, 145, 145, 0.5);
+  & .tile-title{
+    color: $colorMain;
+    height: 30px;
+    font-size: 18px;
+  }
+  & .tile-temperature{
+    font-size: 28px;
+    height: 68px;
+    padding-top: 12px;
+  }
+  & .tile-description{
+    color: $colorSecond;
+    height: 30px;
+    font-size: 14px;
+  }
+  & .tile-pressure{
+    color: $colorSecond;
+    height: 20px;
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  & .tile-humilidity{
+    color: $colorSecond;
+    height: 30px;
+    font-size: 14px;
+  }
+  & .plus-temperature{
+    color: $green;
+  }
+  & .minus-temperature{
+    color: $blueSecond;
+  }
+}
+
+.remove-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 14px;
+  color: #ff6c6c;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}

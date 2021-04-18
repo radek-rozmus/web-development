@@ -1,0 +1,16 @@
+@import '../../variables.scss';
+
+.wrapper{
+    left: unquote("calc(50% - #{$wrapperWidth / 2})");
+    right: 0;
+    position: absolute;
+    margin-top: auto;
+    margin-right: auto;
+    top: $headerHeight;
+    width: $wrapperWidth;
+    color: white;
+    height: unquote("calc(100% - #{$headerHeight})");
+    display: inline-block;
+    padding: 8px;
+    text-align: left;
+}
