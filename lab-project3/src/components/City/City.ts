@@ -55,7 +55,6 @@ export class City {
     this.removeButton.classList.add("remove-button");
     this.removeButton.innerText = "X";
     this.removeButton.onclick = () => {
-      this.app.wrapper.innerHTML = "";
       const index = this.app.cityNames.indexOf(this.name);
       this.app.cityNames.splice(index, 1);
       console.log(this.app.cityNames);

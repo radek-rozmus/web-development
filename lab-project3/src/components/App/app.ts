@@ -46,6 +46,7 @@ export class App {
       const city = new City(cityName, this.wrapper, weather, this);
       this.cities.push(city);
     };
+    setInterval(() => this.renderCities(), 600000)
   }
   saveData(data: string[]) {
     localStorage.setItem("cityNames", JSON.stringify(data));
@@ -90,6 +91,8 @@ export class App {
   }
 
   renderCities() {
+    console.log("render");
+    this.wrapper.innerHTML = "";
     this.cityNames.forEach((cityName) => {
       const weather = this.getWeather(cityName, this.opwApiKey, false);
       const newCity = new City(cityName, this.wrapper, weather, this);
