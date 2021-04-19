@@ -34,19 +34,28 @@ export class App {
     this.addCityInput = document.querySelector(
       ".add-city-input"
     ) as HTMLInputElement;
+    this.addCityInput.addEventListener("keydown", event => {
+      if (event.keyCode === 13) {
+        this.addCity();
+      }
+    });
+
     this.addCityButton = document.querySelector(
       ".add-city-button"
     ) as HTMLButtonElement;
     this.communicate = document.querySelector(".communicate") as HTMLDivElement;
 
     this.addCityButton.onclick = () => {
-      const cityName = this.addCityInput.value;
-      this.addCityInput.value = "";
-      const weather = this.getWeather(cityName, this.opwApiKey, true);
-      const city = new City(cityName, this.wrapper, weather, this);
-      this.cities.push(city);
+      this.addCity();
     };
-    setInterval(() => this.renderCities(), 600000)
+    setInterval(() => this.renderCities(), 600000);
+  }
+  addCity = () => {
+    const cityName = this.addCityInput.value;
+    this.addCityInput.value = "";
+    const weather = this.getWeather(cityName, this.opwApiKey, true);
+    const city = new City(cityName, this.wrapper, weather, this);
+    this.cities.push(city);
   }
   saveData(data: string[]) {
     localStorage.setItem("cityNames", JSON.stringify(data));
