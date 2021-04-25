@@ -85,7 +85,7 @@ export class App {
         return response;
       } else {
         this.communicate.innerText = `Nie znaleziono ${name}.`;
-        throw Error(`Nie znaleziono ${name}.`);
+        return Promise.reject(`Nie znaleziono ${name}.`);
       }
     });
     const weatherData = await weatherResponse.json();
