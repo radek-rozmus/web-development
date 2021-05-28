@@ -1,0 +1,13 @@
+@import '../../styleHelpers/Colors.scss';
+
+.notes-list__note{
+    width: 420px;
+    min-height: 48px;
+    border: 1px solid;
+    @include color-theme;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: justify;
+    word-wrap: break-word;
+}

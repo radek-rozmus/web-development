@@ -1,0 +1,23 @@
+@import '../../styleHelpers/Colors.scss';
+.add-note-panel{
+margin-top: 48px;
+}
+.add-note-panel__input{
+    width: 360px;
+    height: 36px;
+    margin-right: 10px;
+    border: 1px solid;
+    @include color-theme;
+    border-radius: 200px;
+    outline: none;
+    padding: 0 20px;
+}
+.add-note-panel__button{
+    width: 36px;
+    height: 36px;
+    margin-left: 10px;
+    border: 1px solid;
+    @include color-theme;
+    border-radius: 200px;
+    outline: none;
+}

@@ -1,0 +1,82 @@
+@import "../../styleHelpers/Colors.scss";
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 64px;
+
+  justify-content: left;
+  align-items: center;
+
+  border-bottom: 1px solid $borderColor;
+}
+.hamburger {
+  width: 100px;
+  height: 72px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger__button {
+  padding: 10px;
+  background-color: transparent;
+  margin: 0;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.hamburger__box {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+@mixin hamburger-line {
+  width: 100%;
+  height: 3px;
+  background-color: $fontColor;
+  position: absolute;
+}
+
+.hamburger__inner {
+  @include hamburger-line;
+
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color .1s .2s ease-in-out;
+}
+.hamburger__inner::before,
+.hamburger__inner::after {
+  @include hamburger-line;
+
+  content: '';
+  left: 0;
+  transition: transform .2s .2s ease-in-out;
+}
+
+.hamburger__inner::before {
+  top: -8px;
+}
+.hamburger__inner::after {
+  top: 8px;
+}
+
+.hamburger__button--active .hamburger__inner {
+    background-color: transparent;
+}
+
+.hamburger__button--active .hamburger__inner::before {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger__button--active .hamburger__inner::after {
+    transform: translateY(-8px) rotate(-45deg);
+}

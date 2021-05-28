@@ -1,10 +1,11 @@
 //app colors
 
 $backgroundColor: #1A1C1F;
+$secondBackgroundColor: #303030;
 $fontColor: #E8EBEE;
 $borderColor: #5F6468;
 
-@mixin colorTheme {
+@mixin color-theme {
     background-color: $backgroundColor;
     color: $fontColor;
     border-color: $borderColor;

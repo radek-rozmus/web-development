@@ -1,28 +1,31 @@
-import Note from "../Note/Note";
+import './NotesList.scss';
+import NotesListProps from './NotesListProps';
 
+import Note from '../Note/Note';
 
-export default class NotesList {
+export default class NotesList implements NotesListProps {
+  context: HTMLElement;
   listPayload: Note[];
-  listContext: HTMLDivElement;
 
-  
+  element: HTMLDivElement;
 
-  constructor(
-    listContext: HTMLDivElement,
-    listPayload: Note[] = [],
-  ) { 
+  constructor(listContext: HTMLElement, listPayload: Note[] = []) {
+    this.context = listContext;
     this.listPayload = listPayload;
-    this.listContext = listContext;
-    this.listInit(this.listContext);
+
+    this.initNotesList();
   }
 
-  listInit(where: HTMLDivElement) {
-    console.log('list init')
+  initNotesList = () => {
+    this.element = document.createElement("div");
+    this.element.classList.add('notes-list');
+    this.context.appendChild(this.element);
   }
-  listAdd(note: Note) {
-    this.listPayload.push(note)
+  noteAdd(note: Note) {
+    this.listPayload.push(note);
+    this.element.appendChild(note.element);
   }
-  listRemove(note: Note) {
-   console.log('list remove')
+  noteRemove(note: Note) {
+    console.log("list remove");
   }
 }

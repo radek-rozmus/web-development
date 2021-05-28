@@ -1,25 +1,23 @@
-import Note from "../Note/Note";
-import NotesList from "../NotesList/NotesList";
+import './App.scss';
+import AppProps from './AppProps';
 
-export class App {
+import Header from '../Header/Header';
+import Main from '../Main/Main';
+
+export default class App implements AppProps {
   root: HTMLDivElement;
-  header: HTMLDivElement;
-
-
-  notes: NotesList;
+  header: Header;
+  main: Main;
 
   constructor() {
+
     this.initApp();
   }
 
-  initApp() {
+  initApp = () => {
     this.root = document.getElementById('root') as HTMLDivElement;
     
-    this.header =  document.createElement('div');
-
-
-    this.notes = new NotesList(this.root);
-    this.notes.listAdd(new Note(5));
-    console.log(this.notes.listPayload[0].counter);
+    this.main = new Main();
+    this.header = new Header(this.main.hamburgerMenu);
   }
 }
