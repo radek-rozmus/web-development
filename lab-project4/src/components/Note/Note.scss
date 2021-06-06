@@ -1,13 +1,75 @@
-@import '../../styleHelpers/Colors.scss';
+@import "../../styleHelpers/Colors.scss";
 
-.notes-list__note{
-    width: 420px;
-    min-height: 48px;
-    border: 1px solid;
-    @include color-theme;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 10px 0;
-    text-align: justify;
-    word-wrap: break-word;
+.note__button {
+  position: relative;
+
+  border: none;
+  padding: 0;
+  margin: 3px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+  color: $borderColor;
+  outline: none;
+  cursor: pointer;
 }
+
+.note__button:hover {
+    color: $fontColor;
+  }
+
+.note {
+  position: relative;
+  width: 420px;
+  min-height: 48px;
+  border: 1px solid;
+  @include color-theme;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: justify;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.note__delete-button {
+}
+
+.note__edit-button {
+  width: 16px;
+  height: 16px;
+}
+
+.note__color-button {
+    width: 16px;
+    height: 16px;
+  }
+
+.note__menu{
+    width: 58px;
+    padding: 6px;
+    height: calc(100% - 12px);
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: end;
+    transform: translateX(60px);
+    transition: all .3s ease-in-out;
+}
+.note__menu::before{
+    height: 86%;
+    content: '';
+    left: -0px;
+    position: absolute;
+    border-left: 2px solid $borderColor;
+}
+.note__menu:hover{
+    transform: translateX(0);
+}
+  

@@ -4,14 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notes</title>
+
+    <link rel="stylesheet" href="fontello/css/fontello.css">
   </head>
   <body>
     <div id="root">
-      <header class = "header">
-
+      <header class="header">
+        <div class="hamburger">
+          <button class="hamburger__button">
+            <span class="hamburger__box">
+              <span class="hamburger__inner"> </span>
+            </span>
+          </button>
+        </div>
       </header>
-      <main class = "main">
-
+      <main class="main">
+        <div class="add-note-panel">
+          <input type="text" class="add-note-panel__input" />
+          <button class="add-note-panel__button">+</button>
+        </div>
+        <div class="hamburger-menu">
+          <ul class="hamburger-menu__list">
+            <li class="hamburger-menu__item">
+              <a class="hamburger-menu__link" href="#">Notes</a>
+            </li>
+            <li class="hamburger-menu__item">
+              <a class="hamburger-menu__link" href="#">Notifications</a>
+            </li>
+            <li class="hamburger-menu__item">
+              <a class="hamburger-menu__link" href="#">Help</a>
+            </li>
+          </ul>
+        </div>
+        <div class="notes-list"></div>
       </main>
     </div>
     <script src="index.js"></script>

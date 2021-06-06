@@ -1,9 +1,11 @@
+import Main from '../Main/Main';
 import Note from '../Note/Note';
 import NotesList from '../NotesList/NotesList';
 import './AddNotePanel.scss';
 import AddNotePanelProps from './AddNotePanelProps';
 
 export default class AddNotePanel implements AddNotePanelProps {
+    contextObject: Main;
     context: HTMLElement;
     list: NotesList;
 
@@ -11,34 +13,27 @@ export default class AddNotePanel implements AddNotePanelProps {
     input: HTMLInputElement;
     button: HTMLButtonElement;
 
-    constructor(addNotePanelContext: HTMLElement, list: NotesList) {
-        this.context = addNotePanelContext;
-        this.list = list;
+    constructor(addNotePanelContext: Main) {
+        this.contextObject = addNotePanelContext;
+        this.context = addNotePanelContext.element;
+        this.list = addNotePanelContext.notesList;
         this.initAddNotePanel();
       }
 
       initAddNotePanel = () => {
-        this.element = document.createElement('div');
-        this.element.classList.add('add-note-panel');
-        this.context.insertBefore(this.element, this.context.firstChild)
+        this.element = document.querySelector('.add-note-panel');
 
-        this.input = document.createElement('input');
-        this.input.classList.add('add-note-panel__input');
-        this.input.innerText = "Input";
-        this.element.appendChild(this.input);
+        this.input = document.querySelector('.add-note-panel__input');
 
-        this.button = document.createElement('button');
-        this.button.classList.add('add-note-panel__button');
-        this.button.textContent = '+';
+        this.button = document.querySelector('.add-note-panel__button');
         this.button.onclick = this.handleAddNoteClick;
-        this.element.appendChild(this.button);
     }
 
     handleAddNoteClick = () => {
       if(this.input.value){
       const note = new Note(this.input.value, this.list);
-      this.list.noteAdd(note);
       this.input.value = '';
+      this.contextObject.saveData(this.list.listPayload.map(item => item.text));
       }
     }
 }

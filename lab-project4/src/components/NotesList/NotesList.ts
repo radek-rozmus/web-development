@@ -3,6 +3,7 @@ import NotesListProps from './NotesListProps';
 
 import Note from '../Note/Note';
 import Main from '../Main/Main';
+import NoteProps from '../Note/NoteProps';
 
 export default class NotesList implements NotesListProps {
   contextObject: Main;
@@ -20,11 +21,8 @@ export default class NotesList implements NotesListProps {
   }
 
   initNotesList = () => {
-    this.element = document.createElement("div");
-    this.element.classList.add('notes-list');
-    this.context.appendChild(this.element);
-    this.listPayload = this.contextObject.getData();
-    this.renderCurrentElements();
+    this.element = document.querySelector(".notes-list");
+    this.listPayload = this.contextObject.getData().map((item: string) => new Note(item, this));
   }
   noteAdd(note: Note) {
     this.listPayload.push(note);
@@ -33,13 +31,11 @@ export default class NotesList implements NotesListProps {
   noteRemove(note: Note) {
     console.log("list remove");
   }
-  renderCurrentElements() {
+  renderCurrentElements(){
+    console.log("render");
     this.element.innerHTML = "";
-    console.log(this.listPayload)
-    this.listPayload.map((note: Note) => {
-      const newNote = new Note(note.text, this);//note text undefined
-
-      this.noteAdd(newNote);
+    this.listPayload.map((item) => {
+      const newNote = new Note(item.text, this);
       return newNote;
     });
   }

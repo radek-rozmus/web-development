@@ -16,25 +16,10 @@ export default class Header implements HeaderProps {
     }
 
     initHeader = () => {
-        this.element = this.element =  document.querySelector('.header');
-        
+        this.element =  document.querySelector('.header');
 
-        const hamburger = document.createElement('div');
-        hamburger.classList.add('hamburger');
-        this.element.appendChild(hamburger);
-
-        this.hamburgerButton = document.createElement('button');
-        this.hamburgerButton.classList.add('hamburger__button');
-        this.hamburgerButton.addEventListener('click', this.handleHamburgerClick)
-        hamburger.appendChild(this.hamburgerButton);
-
-        const hamburgerBox = document.createElement('span');
-        hamburgerBox.classList.add('hamburger__box');
-        this.hamburgerButton.appendChild(hamburgerBox);
-
-        const hamburgerInner = document.createElement('span');
-        hamburgerInner.classList.add('hamburger__inner');
-        hamburgerBox.appendChild(hamburgerInner);
+        this.hamburgerButton = document.querySelector('.hamburger__button');
+        this.hamburgerButton.addEventListener('click', this.handleHamburgerClick);
     }
 
     handleHamburgerClick = () => {

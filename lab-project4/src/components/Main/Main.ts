@@ -18,7 +18,19 @@ export default class Main implements MainProps {
     initMain = () => {
         this.element =  document.querySelector('.main');
         this.hamburgerMenu = new HamburgerMenu(this.element, ['Notes', 'Notifications', 'Help']);
-        this.notesList = new NotesList(this.element, []);
-        this.addNotePanel = new AddNotePanel(this.element, this.notesList);
+        this.notesList = new NotesList(this, []);
+        this.addNotePanel = new AddNotePanel(this);
+    }
+
+    saveData(data: string[]) {
+      localStorage.setItem("notes", JSON.stringify(data));
+    }
+    getData(): string[] {
+      const data = localStorage.getItem("notes");
+      if (data) {
+        return JSON.parse(data);
+      } else {
+        return [];
+      }
     }
 }

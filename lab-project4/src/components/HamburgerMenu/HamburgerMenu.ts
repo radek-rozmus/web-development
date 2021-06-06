@@ -14,27 +14,23 @@ export default class HamburgerMenu implements HamburgerMenuProps {
   }
 
   initHamburgerMenu = (items: string[]) => {
-    this.element = document.createElement("div");
-    this.element.classList.add("hamburger-menu");
-    this.context.appendChild(this.element);
+    this.element = document.querySelector(".hamburger-menu");
 
-    const hamburgerMenuList = document.createElement("ul");
-    hamburgerMenuList.classList.add("hamburger-menu__list");
-    this.element.appendChild(hamburgerMenuList);
+    const hamburgerMenuList = document.querySelector(".hamburger-menu__list");
 
-    items.forEach((item) => {
-      const hamburgerMenuItem = document.createElement("li");
-      hamburgerMenuItem.classList.add("hamburger-menu__item");
-      this.items.push(hamburgerMenuItem);
+    // items.forEach((item) => {
+    //   const hamburgerMenuItem = document.createElement("li");
+    //   hamburgerMenuItem.classList.add("hamburger-menu__item");
+    //   this.items.push(hamburgerMenuItem);
 
-      const hamburgerMenuLink = document.createElement("a");
-      hamburgerMenuLink.classList.add("hamburger-menu__link");
-      hamburgerMenuLink.innerText = item;
-      hamburgerMenuLink.href = '#';
+    //   const hamburgerMenuLink = document.createElement("a");
+    //   hamburgerMenuLink.classList.add("hamburger-menu__link");
+    //   hamburgerMenuLink.innerText = item;
+    //   hamburgerMenuLink.href = '#';
 
-      hamburgerMenuItem.appendChild(hamburgerMenuLink);
-      hamburgerMenuList.appendChild(hamburgerMenuItem);
-    });
+    //   hamburgerMenuItem.appendChild(hamburgerMenuLink);
+    //   hamburgerMenuList.appendChild(hamburgerMenuItem);
+    // });
   };
 
   hamburgerMenuToggle = () => {
