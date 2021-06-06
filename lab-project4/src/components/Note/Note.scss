@@ -49,6 +49,8 @@
   }
 
 .note__menu{
+    @include color-theme();
+
     width: 58px;
     padding: 6px;
     height: calc(100% - 12px);
@@ -67,7 +69,8 @@
     content: '';
     left: -0px;
     position: absolute;
-    border-left: 2px solid $borderColor;
+    border-left: 3px solid $borderColor;
+    border-radius: 10px;
 }
 .note__menu:hover{
     transform: translateX(0);

@@ -29,14 +29,20 @@ export default class NotesList implements NotesListProps {
     this.element.appendChild(note.element);
   }
   noteRemove(note: Note) {
-    console.log("list remove");
+    const index = this.listPayload.indexOf(note);
+    console.log(this.listPayload.splice(index, 1));
+      console.log(this.listPayload);
+      this.contextObject.saveData(this.listPayload.map(item => item.text));
+      this.renderCurrentElements();
   }
   renderCurrentElements(){
     console.log("render");
     this.element.innerHTML = "";
-    this.listPayload.map((item) => {
-      const newNote = new Note(item.text, this);
-      return newNote;
-    });
+    this.listPayload = [];
+    this.listPayload = this.contextObject.getData().map((item: string) => new Note(item, this));
+    // this.listPayload.map((item) => {
+    //   const newNote = new Note(item.text, this);
+    //   return newNote;
+    // });
   }
 }

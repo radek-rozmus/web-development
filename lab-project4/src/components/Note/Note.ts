@@ -27,6 +27,7 @@ export default class Note implements NoteProps{
         deleteButton.classList.add('note__button');
         deleteButton.classList.add('note__delete-button');
         deleteButton.innerText = 'DELETE';
+        deleteButton.onclick = this.handleDeleteButtonClick;
         noteMenu.appendChild(deleteButton);
 
         const editNoteButton = document.createElement('button');
@@ -49,5 +50,9 @@ export default class Note implements NoteProps{
 
 
         this.list.noteAdd(this);
+    }
+
+    handleDeleteButtonClick = () => {
+        this.list.noteRemove(this);
     }
 }
