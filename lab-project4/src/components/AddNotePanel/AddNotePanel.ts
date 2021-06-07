@@ -32,9 +32,9 @@ export default class AddNotePanel implements AddNotePanelProps {
 
     handleAddNoteClick = () => {
       if(this.input.value){
-      const note = new Note(this.input.value, this.list, 'primary');
+      const note = new Note(this.input.value, this.list, 'primary', false);
       this.input.value = '';
-      const data = this.list.listPayload.map((item: Note): NoteData => ({text: item.text, colorClass: item.colorClass}));
+      const data = this.list.listPayload.map((item: Note): NoteData => ({text: item.text, colorClass: item.colorClass, pinned: item.pinned}));
       this.contextObject.saveData(data);
       }
     }

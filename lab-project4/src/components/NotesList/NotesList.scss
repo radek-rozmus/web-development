@@ -1,6 +1,29 @@
-.notes-list{
-    margin-top: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@mixin list-title {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notes-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pinned-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inactive {
+  visibility: hidden;
+  display: none;
+}
+.pinned-list-title {
+  @include list-title();
+}
+.notes-list-title {
+  @include list-title();
 }

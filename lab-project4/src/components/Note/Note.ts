@@ -6,6 +6,8 @@ import NoteData from "../../models/types/NoteData";
 export default class Note implements NoteProps {
   list: NotesList;
   text: string;
+  colorClass: string;
+  pinned: boolean;
 
   element: HTMLElement;
   isEditing: boolean;
@@ -16,12 +18,12 @@ export default class Note implements NoteProps {
   palette: HTMLDivElement;
   changeColorIcon: HTMLElement;
   wrapper: HTMLDivElement;
-  colorClass: string;
 
-  constructor(text: string, list: NotesList, colorClass: string) {
+  constructor(text: string, list: NotesList, colorClass: string, pinned: boolean) {
     this.list = list;
     this.text = text;
     this.colorClass = colorClass;
+    this.pinned = pinned;
     this.initNote();
   }
 
@@ -65,11 +67,12 @@ export default class Note implements NoteProps {
     const editNoteButton = document.createElement("button");
     editNoteButton.classList.add("note__button");
     editNoteButton.classList.add("note__edit-button");
-    editNoteButton.onclick = this.handleToggleEditClick;
+    editNoteButton.onclick = this.handleTogglePin;
     noteMenu.appendChild(editNoteButton);
 
     this.editNoteIcon = document.createElement("i");
-    this.editNoteIcon.classList.add("icon-pencil");
+    if (this.pinned) this.editNoteIcon.classList.add("icon-pin");
+    else this.editNoteIcon.classList.add("icon-pin-outline");
     editNoteButton.appendChild(this.editNoteIcon);
 
     //change color button
@@ -133,7 +136,7 @@ export default class Note implements NoteProps {
     this.list.noteRemove(this);
   };
   handleToggleEditClick = () => {
-    if (this.isEditing) {
+    if (this.isEditing && this.noteContentDisplayInput.value) {
       this.noteContentDisplay.removeChild(this.noteContentDisplayInput);
       this.text = this.noteContentDisplayInput.value;
       this.noteContentDisplay.appendChild(this.noteContentDisplayDiv);
@@ -141,26 +144,39 @@ export default class Note implements NoteProps {
         (item: Note): NoteData => ({
           text: item.text,
           colorClass: item.colorClass,
+          pinned: item.pinned,
         })
       );
       this.list.contextObject.saveData(data);
       this.list.renderCurrentElements();
-      this.editNoteIcon.classList.toggle("icon-pencil");
-      this.editNoteIcon.classList.toggle("icon-check");
-    } else {
+    } else if (!this.isEditing) {
       this.noteContentDisplay.removeChild(this.noteContentDisplayDiv);
       this.noteContentDisplay.appendChild(this.noteContentDisplayInput);
-      this.editNoteIcon.classList.toggle("icon-pencil");
-      this.editNoteIcon.classList.toggle("icon-check");
       this.noteContentDisplayInput.focus();
+    } else {
+      this.list.renderCurrentElements();
     }
     const newEditing = !this.isEditing;
     this.isEditing = newEditing;
   };
+  handleTogglePin = () => {
+    this.pinned = !this.pinned;
+    const data = this.list.listPayload.map(
+      (item: Note): NoteData => ({
+        text: item.text,
+        colorClass: item.colorClass,
+        pinned: item.pinned,
+      })
+    );
+    this.list.contextObject.saveData(data);
+    this.list.renderCurrentElements();
+    this.list.toggleListsDisplay();
+    
+  };
   handleTogglePalette = () => {
     this.palette.classList.toggle("note__palette--active");
     this.changeColorIcon.classList.toggle("icon-color-adjust");
-    this.changeColorIcon.classList.toggle("icon-check");
+    this.changeColorIcon.classList.toggle("icon-cancel-circled");
   };
   handleChangeColor = (colorClass: string) => {
     console.log(colorClass)
@@ -169,6 +185,7 @@ export default class Note implements NoteProps {
       (item: Note): NoteData => ({
         text: item.text,
         colorClass: item.colorClass,
+        pinned: item.pinned,
       })
     );
     this.list.contextObject.saveData(data);

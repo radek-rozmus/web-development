@@ -5,4 +5,5 @@ export default interface NotesListProps {
   listPayload: Note[];
 
   element:HTMLDivElement;
+  pinnedList: HTMLDivElement;
 }
