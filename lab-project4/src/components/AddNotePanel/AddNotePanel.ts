@@ -1,3 +1,4 @@
+import NoteData from '../../models/types/NoteData';
 import Main from '../Main/Main';
 import Note from '../Note/Note';
 import NotesList from '../NotesList/NotesList';
@@ -31,9 +32,10 @@ export default class AddNotePanel implements AddNotePanelProps {
 
     handleAddNoteClick = () => {
       if(this.input.value){
-      const note = new Note(this.input.value, this.list);
+      const note = new Note(this.input.value, this.list, 'primary');
       this.input.value = '';
-      this.contextObject.saveData(this.list.listPayload.map(item => item.text));
+      const data = this.list.listPayload.map((item: Note): NoteData => ({text: item.text, colorClass: item.colorClass}));
+      this.contextObject.saveData(data);
       }
     }
 }

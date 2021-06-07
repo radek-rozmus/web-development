@@ -4,6 +4,7 @@ import MainProps from './MainProps';
 import AddNotePanel from '../AddNotePanel/AddNotePanel';
 import NotesList from '../NotesList/NotesList';
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
+import NoteData from '../../models/types/NoteData';
 
 export default class Main implements MainProps {
     element: HTMLElement;
@@ -22,13 +23,13 @@ export default class Main implements MainProps {
         this.addNotePanel = new AddNotePanel(this);
     }
 
-    saveData(data: string[]) {
+    saveData(data: NoteData[]) {
       localStorage.setItem("notes", JSON.stringify(data));
     }
-    getData(): string[] {
+    getData(): NoteData[] {
       const data = localStorage.getItem("notes");
       if (data) {
-        return JSON.parse(data);
+        return JSON.parse(data).map((item: { text: string; colorClass: string; }) => item);
       } else {
         return [];
       }

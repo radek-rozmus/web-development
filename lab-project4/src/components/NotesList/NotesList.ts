@@ -4,6 +4,7 @@ import NotesListProps from './NotesListProps';
 import Note from '../Note/Note';
 import Main from '../Main/Main';
 import NoteProps from '../Note/NoteProps';
+import NoteData from '../../models/types/NoteData';
 
 export default class NotesList implements NotesListProps {
   contextObject: Main;
@@ -22,7 +23,7 @@ export default class NotesList implements NotesListProps {
 
   initNotesList = () => {
     this.element = document.querySelector(".notes-list");
-    this.listPayload = this.contextObject.getData().map((item: string) => new Note(item, this));
+    this.listPayload = this.contextObject.getData().map((item: NoteData) => new Note(item.text, this, item.colorClass));
   }
   noteAdd(note: Note) {
     this.listPayload.push(note);
@@ -32,14 +33,15 @@ export default class NotesList implements NotesListProps {
     const index = this.listPayload.indexOf(note);
     console.log(this.listPayload.splice(index, 1));
       console.log(this.listPayload);
-      this.contextObject.saveData(this.listPayload.map(item => item.text));
+      const data = this.listPayload.map((item: Note): NoteData => ({text: item.text, colorClass: item.colorClass}));
+      this.contextObject.saveData(data);
       this.renderCurrentElements();
   }
   renderCurrentElements(){
     console.log("render");
     this.element.innerHTML = "";
     this.listPayload = [];
-    this.listPayload = this.contextObject.getData().map((item: string) => new Note(item, this));
+    this.listPayload = this.contextObject.getData().map((item: NoteData) => new Note(item.text, this, item.colorClass));
     // this.listPayload.map((item) => {
     //   const newNote = new Note(item.text, this);
     //   return newNote;

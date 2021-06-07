@@ -1,6 +1,7 @@
 @import "../../styleHelpers/Colors.scss";
 
 .header {
+  @include color-theme();
   position: fixed;
   top: 0;
   left: 0;
@@ -12,6 +13,7 @@
   align-items: center;
 
   border-bottom: 1px solid $borderColor;
+  z-index: 5;
 }
 .hamburger {
   width: 100px;
@@ -51,15 +53,15 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  transition: background-color .1s .2s ease-in-out;
+  transition: background-color 0.1s 0.2s ease-in-out;
 }
 .hamburger__inner::before,
 .hamburger__inner::after {
   @include hamburger-line;
 
-  content: '';
+  content: "";
   left: 0;
-  transition: transform .2s .2s ease-in-out;
+  transition: transform 0.2s 0.2s ease-in-out;
 }
 
 .hamburger__inner::before {
@@ -70,13 +72,13 @@
 }
 
 .hamburger__button--active .hamburger__inner {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .hamburger__button--active .hamburger__inner::before {
-    transform: translateY(8px) rotate(45deg);
+  transform: translateY(8px) rotate(45deg);
 }
 
 .hamburger__button--active .hamburger__inner::after {
-    transform: translateY(-8px) rotate(-45deg);
+  transform: translateY(-8px) rotate(-45deg);
 }

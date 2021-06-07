@@ -20,4 +20,9 @@ margin-top: 48px;
     @include color-theme;
     border-radius: 200px;
     outline: none;
+    cursor: pointer;
+}
+.add-note-panel__button:hover{
+    transition: transform .05s ease-in-out;
+    transform: scale(1.2);
 }
