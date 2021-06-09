@@ -22,7 +22,10 @@ export default class NotesList implements NotesListProps {
     this.contextObject = context;
     this.context = context.element;
     this.listPayload = listPayload;
-    this.getDataBlock().then(() => this.initNotesList());
+    
+    this.initNotesList().then(() => {
+    this.getDataBlock()
+    });
     ;
   }
 
@@ -83,13 +86,13 @@ export default class NotesList implements NotesListProps {
         .getData()
         .map(
           (item: NoteData) =>
-            new Note(item.text, this, item.colorClass, item.pinned)
+            new Note(item.text, this, item.colorClass, item.pinned, item.id)
         );
     } else if (this.contextObject.storage instanceof AppFirestoreStorage) {
       this.listPayload = await this.contextObject.storage
         .getData().then(res => res.map(
           (item: NoteData) =>
-            new Note(item.text, this, item.colorClass, item.pinned)
+            new Note(item.text, this, item.colorClass, item.pinned, item.id)
         ))
         
     }
