@@ -2,6 +2,8 @@ import NotesList from "../NotesList/NotesList";
 import "./Note.scss";
 import NoteProps from "./NoteProps";
 import NoteData from "../../models/types/NoteData";
+import AppLocalStorage from "../../models/interfaaces/AppLocalStorage";
+import storageGuard from "../../models/guards/storageGuard";
 
 export default class Note implements NoteProps {
   list: NotesList;
@@ -19,7 +21,12 @@ export default class Note implements NoteProps {
   changeColorIcon: HTMLElement;
   wrapper: HTMLDivElement;
 
-  constructor(text: string, list: NotesList, colorClass: string, pinned: boolean) {
+  constructor(
+    text: string,
+    list: NotesList,
+    colorClass: string,
+    pinned: boolean
+  ) {
     this.list = list;
     this.text = text;
     this.colorClass = colorClass;
@@ -133,21 +140,20 @@ export default class Note implements NoteProps {
   };
 
   handleDeleteButtonClick = () => {
-    this.list.noteRemove(this);
+    if (this.list.contextObject.storage instanceof AppLocalStorage) {
+      this.list.contextObject.storage.deleteNote(this, this.list);
+    }
+    this.list.renderCurrentElements();
   };
   handleToggleEditClick = () => {
     if (this.isEditing && this.noteContentDisplayInput.value) {
       this.noteContentDisplay.removeChild(this.noteContentDisplayInput);
       this.text = this.noteContentDisplayInput.value;
       this.noteContentDisplay.appendChild(this.noteContentDisplayDiv);
-      const data = this.list.listPayload.map(
-        (item: Note): NoteData => ({
-          text: item.text,
-          colorClass: item.colorClass,
-          pinned: item.pinned,
-        })
-      );
-      this.list.contextObject.saveData(data);
+      // if (this.list.contextObject.storage instanceof AppLocalStorage) {
+      //   this.list.contextObject.storage.updateNote(this.list);
+      // }
+      storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
       this.list.renderCurrentElements();
     } else if (!this.isEditing) {
       this.noteContentDisplay.removeChild(this.noteContentDisplayDiv);
@@ -161,17 +167,9 @@ export default class Note implements NoteProps {
   };
   handleTogglePin = () => {
     this.pinned = !this.pinned;
-    const data = this.list.listPayload.map(
-      (item: Note): NoteData => ({
-        text: item.text,
-        colorClass: item.colorClass,
-        pinned: item.pinned,
-      })
-    );
-    this.list.contextObject.saveData(data);
+    storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
     this.list.renderCurrentElements();
-    this.list.toggleListsDisplay();
-    
+    //this.list.toggleListsDisplay();
   };
   handleTogglePalette = () => {
     this.palette.classList.toggle("note__palette--active");
@@ -179,16 +177,8 @@ export default class Note implements NoteProps {
     this.changeColorIcon.classList.toggle("icon-cancel-circled");
   };
   handleChangeColor = (colorClass: string) => {
-    console.log(colorClass)
     this.colorClass = colorClass;
-    const data = this.list.listPayload.map(
-      (item: Note): NoteData => ({
-        text: item.text,
-        colorClass: item.colorClass,
-        pinned: item.pinned,
-      })
-    );
-    this.list.contextObject.saveData(data);
+    storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
     this.list.renderCurrentElements();
   };
 }

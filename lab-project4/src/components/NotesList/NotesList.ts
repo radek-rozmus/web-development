@@ -3,8 +3,9 @@ import NotesListProps from "./NotesListProps";
 
 import Note from "../Note/Note";
 import Main from "../Main/Main";
-import NoteProps from "../Note/NoteProps";
 import NoteData from "../../models/types/NoteData";
+import AppLocalStorage from "../../models/interfaaces/AppLocalStorage";
+import AppFirestoreStorage from "../../models/interfaaces/AppFirestoreStorage";
 
 export default class NotesList implements NotesListProps {
   contextObject: Main;
@@ -21,21 +22,18 @@ export default class NotesList implements NotesListProps {
     this.contextObject = context;
     this.context = context.element;
     this.listPayload = listPayload;
-
-    this.initNotesList();
+    this.getDataBlock().then(() => this.initNotesList());
+    ;
   }
 
-  initNotesList = () => {
+  initNotesList = async () => {
     this.element = document.querySelector(".notes-list");
     this.pinnedList = document.querySelector(".pinned-list");
     this.pinnedListTitle = document.querySelector(".pinned-list-title");
     this.notesListTitle = document.querySelector(".notes-list-title");
-    this.listPayload = this.contextObject
-      .getData()
-      .map(
-        (item: NoteData) =>
-          new Note(item.text, this, item.colorClass, item.pinned)
-      );
+    this.element.innerHTML = "";
+    this.pinnedList.innerHTML = "";
+    this.toggleListsDisplay();
   };
   noteAdd(note: Note) {
     this.listPayload.push(note);
@@ -49,34 +47,25 @@ export default class NotesList implements NotesListProps {
       this.element.appendChild(note.element);
     }
   }
-  noteRemove(note: Note) {
-    const index = this.listPayload.indexOf(note);
-    console.log(this.listPayload.splice(index, 1));
-    console.log(this.listPayload);
-    const data = this.listPayload.map(
-      (item: Note): NoteData => ({
-        text: item.text,
-        colorClass: item.colorClass,
-        pinned: item.pinned,
-      })
-    );
-    this.contextObject.saveData(data);
-    this.renderCurrentElements();
-  }
-  renderCurrentElements() {
+  async renderCurrentElements() {
     console.log("render");
     this.element.innerHTML = "";
     this.pinnedList.innerHTML = "";
     this.listPayload = [];
-    this.listPayload = this.contextObject
+    if(this.contextObject.storage instanceof AppLocalStorage){
+    this.listPayload = this.contextObject.storage
       .getData()
       .map(
         (item: NoteData) =>
           new Note(item.text, this, item.colorClass, item.pinned)
       );
+    }
+    this.toggleListsDisplay();
   }
   toggleListsDisplay() {
-    console.log('togggle list display')
+    console.log(
+      `${this.element.hasChildNodes()} ${this.pinnedList.hasChildNodes()}`
+    );
     if (this.element.hasChildNodes()) {
       this.notesListTitle.classList.remove("inactive");
     } else {
@@ -86,6 +75,23 @@ export default class NotesList implements NotesListProps {
       this.pinnedListTitle.classList.remove("inactive");
     } else {
       this.pinnedListTitle.classList.add("inactive");
+    }
+  }
+  async getDataBlock(){
+    if (this.contextObject.storage instanceof AppLocalStorage) {
+      this.listPayload = this.contextObject.storage
+        .getData()
+        .map(
+          (item: NoteData) =>
+            new Note(item.text, this, item.colorClass, item.pinned)
+        );
+    } else if (this.contextObject.storage instanceof AppFirestoreStorage) {
+      this.listPayload = await this.contextObject.storage
+        .getData().then(res => res.map(
+          (item: NoteData) =>
+            new Note(item.text, this, item.colorClass, item.pinned)
+        ))
+        
     }
   }
 }

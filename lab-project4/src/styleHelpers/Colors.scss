@@ -1,38 +1,38 @@
 //app colors
 
-$backgroundColor: #1A1C1F;
+$backgroundColor: #1a1c1f;
 $secondBackgroundColor: #303030;
-$fontColor: #E8EBEE;
-$borderColor: #5F6468;
+$fontColor: #e8ebee;
+$borderColor: #5f6468;
 
 @mixin color-theme {
-    background-color: $backgroundColor;
-    color: $fontColor;
-    border-color: $borderColor;
+  background-color: $backgroundColor;
+  color: $fontColor;
+  border-color: $borderColor;
 }
 
 //color palette
 
-.primary{
-    background-color: $backgroundColor;
+.primary {
+  background-color: $backgroundColor;
 }
 
-.purple{
-    background-color: purple;
+.purple {
+  background-color: purple;
 }
 
-.green{
-    background-color: green;
+.green {
+  background-color: green;
 }
 
-.black{
-    background-color: black;
+.black {
+  background-color: black;
 }
 
-.red{
-    background-color: darkred;
+.red {
+  background-color: darkred;
 }
 
-.orange{
-    background-color: darkorange;
+.orange {
+  background-color: darkorange;
 }

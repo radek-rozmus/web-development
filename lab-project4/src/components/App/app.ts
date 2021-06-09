@@ -10,7 +10,6 @@ export default class App implements AppProps {
   main: Main;
 
   constructor() {
-
     this.initApp();
   }
 
