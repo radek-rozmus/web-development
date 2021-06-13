@@ -9,4 +9,4 @@ export const firebaseConfig = {
     appId: "1:279136962878:web:99de704e6685df2ba7c46f"
   };
 
-export const storageConfig = StorageType.firestore;
+export const storageConfig = StorageType.local;

@@ -22,11 +22,7 @@ export default class NotesList implements NotesListProps {
     this.contextObject = context;
     this.context = context.element;
     this.listPayload = listPayload;
-    
-    this.initNotesList().then(() => {
-    this.getDataBlock()
-    });
-    ;
+      this.initNotesList();
   }
 
   initNotesList = async () => {
@@ -36,7 +32,7 @@ export default class NotesList implements NotesListProps {
     this.notesListTitle = document.querySelector(".notes-list-title");
     this.element.innerHTML = "";
     this.pinnedList.innerHTML = "";
-    this.toggleListsDisplay();
+    this.renderCurrentElements();
   };
   noteAdd(note: Note) {
     this.listPayload.push(note);
@@ -51,7 +47,6 @@ export default class NotesList implements NotesListProps {
     }
   }
   async renderCurrentElements() {
-    console.log("render");
     this.element.innerHTML = "";
     this.pinnedList.innerHTML = "";
     this.listPayload = [];
@@ -62,6 +57,13 @@ export default class NotesList implements NotesListProps {
         (item: NoteData) =>
           new Note(item.text, this, item.colorClass, item.pinned)
       );
+    } else if (this.contextObject.storage instanceof AppFirestoreStorage) {
+      this.listPayload = await this.contextObject.storage
+        .getData().then(res => res.map(
+          (item: any) =>{
+            return new Note(item.text, this, item.colorClass, item.pinned, item.id);
+          }
+        ));
     }
     this.toggleListsDisplay();
   }
@@ -86,13 +88,14 @@ export default class NotesList implements NotesListProps {
         .getData()
         .map(
           (item: NoteData) =>
-            new Note(item.text, this, item.colorClass, item.pinned, item.id)
+            new Note(item.text, this, item.colorClass, item.pinned)
         );
     } else if (this.contextObject.storage instanceof AppFirestoreStorage) {
       this.listPayload = await this.contextObject.storage
         .getData().then(res => res.map(
-          (item: NoteData) =>
-            new Note(item.text, this, item.colorClass, item.pinned, item.id)
+          (item: any) =>{
+            return new Note(item.text, this, item.colorClass, item.pinned, item.id);
+          }
         ))
         
     }

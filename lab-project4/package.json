@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest",
     "start": "webpack-dev-server --content-base src",
     "build": "webpack"
   },
@@ -24,6 +24,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "firebase": "^8.6.5"
+    "@types/jest": "^26.0.23",
+    "firebase": "^8.6.5",
+    "jest": "^27.0.4"
   }
 }

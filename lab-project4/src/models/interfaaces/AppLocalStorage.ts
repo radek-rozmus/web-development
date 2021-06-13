@@ -34,6 +34,7 @@ export default class AppLocalStorage implements IAppStorage {
         pinned: item.pinned,
       })
     );
+
     localStorage.setItem("notes", JSON.stringify(data));
   }
   updateNote(list: NotesList){

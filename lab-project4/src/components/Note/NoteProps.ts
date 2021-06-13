@@ -15,4 +15,5 @@ export default interface NotesListProps {
   palette: HTMLDivElement;
   changeColorIcon: HTMLElement;
   wrapper: HTMLDivElement;
+  id?: string;
 }

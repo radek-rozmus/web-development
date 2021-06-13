@@ -1,9 +1,8 @@
 import NotesList from "../NotesList/NotesList";
 import "./Note.scss";
 import NoteProps from "./NoteProps";
-import NoteData from "../../models/types/NoteData";
 import AppLocalStorage from "../../models/interfaaces/AppLocalStorage";
-import storageGuard from "../../models/guards/storageGuard";
+import AppFirestoreStorage from "../../models/interfaaces/AppFirestoreStorage";
 
 export default class Note implements NoteProps {
   list: NotesList;
@@ -20,17 +19,20 @@ export default class Note implements NoteProps {
   palette: HTMLDivElement;
   changeColorIcon: HTMLElement;
   wrapper: HTMLDivElement;
+  id: string;
 
   constructor(
     text: string,
     list: NotesList,
     colorClass: string,
-    pinned: boolean
+    pinned: boolean,
+    id?: string
   ) {
     this.list = list;
     this.text = text;
     this.colorClass = colorClass;
     this.pinned = pinned;
+    this.id = id ? id : null;
     this.initNote();
   }
 
@@ -139,11 +141,30 @@ export default class Note implements NoteProps {
     this.list.noteAdd(this);
   };
 
-  handleDeleteButtonClick = () => {
+  handleUpdate = () => {
+    if (this.list.contextObject.storage instanceof AppLocalStorage) {
+      this.list.contextObject.storage.updateNote(this.list);
+      this.list.renderCurrentElements();
+    } else if (this.list.contextObject.storage instanceof AppFirestoreStorage)
+      this.list.contextObject.storage.updateNote(this.id, this).then(() => {
+        const timeout = setTimeout(() => {
+          this.list.renderCurrentElements();
+          clearTimeout(timeout);
+        }, 200);
+      });
+  };
+
+  handleDeleteButtonClick = async () => {
     if (this.list.contextObject.storage instanceof AppLocalStorage) {
       this.list.contextObject.storage.deleteNote(this, this.list);
+      this.list.renderCurrentElements();
+    } else if (this.list.contextObject.storage instanceof AppFirestoreStorage) {
+      this.list.contextObject.storage.deleteNote(this.id);
+      const timeout = setTimeout(() => {
+        this.list.renderCurrentElements();
+        clearTimeout(timeout);
+      }, 200);
     }
-    this.list.renderCurrentElements();
   };
   handleToggleEditClick = () => {
     if (this.isEditing && this.noteContentDisplayInput.value) {
@@ -153,8 +174,7 @@ export default class Note implements NoteProps {
       // if (this.list.contextObject.storage instanceof AppLocalStorage) {
       //   this.list.contextObject.storage.updateNote(this.list);
       // }
-      storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
-      this.list.renderCurrentElements();
+      this.handleUpdate();
     } else if (!this.isEditing) {
       this.noteContentDisplay.removeChild(this.noteContentDisplayDiv);
       this.noteContentDisplay.appendChild(this.noteContentDisplayInput);
@@ -165,10 +185,10 @@ export default class Note implements NoteProps {
     const newEditing = !this.isEditing;
     this.isEditing = newEditing;
   };
+
   handleTogglePin = () => {
     this.pinned = !this.pinned;
-    storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
-    this.list.renderCurrentElements();
+    this.handleUpdate();
     //this.list.toggleListsDisplay();
   };
   handleTogglePalette = () => {
@@ -178,7 +198,6 @@ export default class Note implements NoteProps {
   };
   handleChangeColor = (colorClass: string) => {
     this.colorClass = colorClass;
-    storageGuard(this.list.contextObject.storage, this.list.contextObject.storage.updateNote.bind(this, this.list), () => {});
-    this.list.renderCurrentElements();
+    this.handleUpdate();
   };
 }
